@@ -114,3 +114,33 @@ function viewRoles() {
           // console.table(results); //logs role table, id is referencing roles
           let departmentList = [];
         results.forEach(result => departmentList.push({name: result.name, value: result.id}));
+
+        return inquirer.prompt([
+            {
+              type: "list",
+              name: "departList",
+              message: "Select a department's budget to view",
+              choices: departmentList
+            },
+          ])
+      .then((data) => {
+        let departmentIDList = data.departList;
+        db.query('SELECT SUM(role.salary) AS department_budget from employee JOIN role ON employee.role_id = role.id WHERE role.department_id = ?', [departmentIDList] , function (err, results) {
+          console.table(results)
+          promptUser();
+        })
+      })
+    })};
+   
+  // ADD
+  function addDepartment() {
+  
+      return inquirer.prompt([
+          {
+              type: "input",
+              name: "departmentName",
+              message: "Please enter a department name"
+          }
+      ]).then((results) => {
+
+        
