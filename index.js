@@ -96,3 +96,21 @@ function viewRoles() {
             console.table(results)
             promptUser()
         })
+    }
+    function viewEmployees() {
+        // finish manager part of query
+        db.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT (manager_name.first_name, " ", manager_name.last_name) AS manager_name FROM employee
+        Join employee manager_name on employee.manager_id = manager_name.id
+        JOIN role ON employee.role_id = role.id
+         JOIN department ON role.department_id = department.id;
+       `
+            , function (err, results) {
+                console.table(results)
+                promptUser()
+            })
+    }
+    function viewBudget(){
+        db.query('SELECT * FROM company_db.department;', function (err, results) {
+          // console.table(results); //logs role table, id is referencing roles
+          let departmentList = [];
+        results.forEach(result => departmentList.push({name: result.name, value: result.id}));
