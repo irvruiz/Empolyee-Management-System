@@ -143,4 +143,58 @@ function viewRoles() {
           }
       ]).then((results) => {
 
-        
+        db.query(` INSERT INTO department set name = ("${results.departmentName}") ;`
+        , function (err, results) {
+            viewDepartments()
+            promptUser()
+        })
+}
+)
+
+}
+function displayEmployeeTable() {
+db.query('SELECT * FROM company_db.employee;', function (err, results) {
+    console.table(results)
+    promptUser()
+})
+}
+
+
+
+function addRole() {
+
+db.query(`SELECT * FROM department;`
+    , function (err, results) {
+        let departArr = [];
+        results.forEach(result => departArr.push({ name: result.name, value: result.id }))
+        return inquirer.prompt([
+            {
+                type: "input",
+                name: "roleName",
+                message: "Please enter a role name"
+            },
+            {
+                type: "input",
+                name: "roleSalary",
+                message: "Please enter a role Salary"
+            },
+            {
+                type: "list",
+                name: "roleDepartment",
+                choices: departArr,
+                message: "Please enter a department"
+            }
+        ]).then((results) => {
+
+
+            db.query(`INSERT INTO department set company_db.role.title = ${results.roleName}, company_db.role.salary = ${results.roleSalary}, company_db.role.department_id = ${results.roleDepartment};`
+                , function (err, results) {
+                  viewRoles()
+                  promptUser()
+
+
+                })
+                if (err) throw new Error("query failure : ", err);
+
+        })
+    })
