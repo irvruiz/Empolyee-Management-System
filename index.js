@@ -83,4 +83,16 @@ function promptUser() {
     });
 }
 
-
+// VIEW
+function viewDepartments() {
+    db.query('SELECT * FROM company_db.department;', function (err, results) {
+        console.table(results)
+        promptUser()
+    })
+}
+function viewRoles() {
+    db.query('select role.title, role.id, role.salary, department.name from department RIGHT JOIN role on department.id = role.department_id;'
+        , function (err, results) {
+            console.table(results)
+            promptUser()
+        })
