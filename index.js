@@ -19,7 +19,7 @@ db.connect((err) => {
         throw error;
     }
 });
-//inqurirer
+
 promptUser()
 function promptUser() {
     return inquirer.prompt([
